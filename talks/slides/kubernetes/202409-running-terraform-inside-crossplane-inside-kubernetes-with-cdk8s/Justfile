@@ -1,0 +1,44 @@
+timeout := "300s"
+
+# List tasks.
+default:
+  just --list
+
+provider_generate:
+  mkdir -p providers
+  kcl run kcl/terraform-provider.k > providers/provider.yaml
+# Generates package files.
+package-generate:
+  mkdir -p package
+  kcl run kcl/terraform-providerconfig.k > package/providerconfig.yaml
+  kcl run kcl/terraform-workspace.k > package/workspace.yaml
+
+# Applies Compositions and Composite Resource Definition.
+package-apply:
+  kubectl apply --filename package/providerconfig.yaml && sleep 1
+  kubectl apply --filename package/workspace.yaml && sleep 1
+
+# Creates a kind cluster, installs Crossplane, providers, and packages, waits until they are healthy, and runs tests.
+cluster-create: package-generate _cluster-create-kind
+  kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout={{timeout}}
+  kubectl wait --for=condition=established --timeout={{timeout}} crd/providerconfigs.tf.upbound.io
+  sleep 60
+  just package-apply
+
+# Destroys the cluster
+cluster-destroy:
+  kind delete cluster
+  rm -rf providers package
+
+# Creates a kind cluster
+_cluster-create-kind: provider_generate
+  -kind create cluster
+  helm upgrade --install crossplane crossplane --repo https://charts.crossplane.io/stable --namespace crossplane-system --create-namespace --wait
+  for provider in `ls -1 providers | grep -v config`; do kubectl apply --filename providers/$provider; done
+
+# Initialize cdk8s python environment
+cdk8s-init:
+  mkdir -p app && cd app && cdk8s init typescript-app
+
+cdk8s-synth:
+  cd app && cdk8s synth

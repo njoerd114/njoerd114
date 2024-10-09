@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.12.0/.schema/devbox.schema.json",
+  "packages": [
+    "kind@latest",
+    "kubernetes-helm@latest",
+    "teller@latest",
+    "just@latest",
+    "kcl-cli@latest",
+    "nodePackages.cdk8s-cli@latest"
+  ],
+  "shell": {
+    "scripts": {
+      "cluster-create":  ["just cluster-create"],
+      "cluster-destroy": ["just cluster-destroy"],
+      "cdk8s-init":      ["just cdk8s-init"]
+    }
+  }
+}

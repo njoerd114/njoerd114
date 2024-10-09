@@ -1,0 +1,53 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "reveal-md@latest": {
+      "last_modified": "2024-09-05T02:32:14Z",
+      "resolved": "github:NixOS/nixpkgs/fcb54ddcc974cff59bdfb7c1ac9e080299763d2d#reveal-md",
+      "source": "devbox-search",
+      "version": "6.1.3",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/yfywk6i5ma168n6lvi7b83k53r7jjx3r-reveal-md-6.1.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/yfywk6i5ma168n6lvi7b83k53r7jjx3r-reveal-md-6.1.3"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/7yzsm0d9y1vd3app5ih02l5abfjy62xq-reveal-md-6.1.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/7yzsm0d9y1vd3app5ih02l5abfjy62xq-reveal-md-6.1.3"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/gqm0d4m0yrrgrhhskxsv1yjra052adjy-reveal-md-6.1.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/gqm0d4m0yrrgrhhskxsv1yjra052adjy-reveal-md-6.1.3"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/vv420kf4zqxlp389mp06fjpiazmgzqdc-reveal-md-6.1.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/vv420kf4zqxlp389mp06fjpiazmgzqdc-reveal-md-6.1.3"
+        }
+      }
+    }
+  }
+}
