@@ -1,0 +1,17 @@
+HashKnownHosts no
+IgnoreUnknown AddKeysToAgent,UseKeychain
+
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  ControlMaster auto
+  ControlPath ~/.ssh/controlmasters/%r@%h:%p
+  ControlPersist 5
+  ServerAliveInterval 300
+  ServerAliveCountMax 6
+  UseRoaming no
+
+Host github.com
+  User git
+
+{{ rbw "sshconfig" }}
