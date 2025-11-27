@@ -1,160 +1,168 @@
 {
-    "packages": [
-        "atuin@latest",
-        "bash-preexec@latest",
-        "bat@latest",
-        "btop@latest",
-        "cheat@latest",
-        "chezmoi@latest",
-        "crossplane-cli@latest",
-        "delta@latest",
-        "direnv@latest",
-        "espanso@latest",
-        "eza@latest",
-        "fzf@latest",
-        "gh@latest",
-        "ghq@latest",
-        "git@latest",
-        "google-chrome@latest",
-        "htop@latest",
-        "jq@latest",
-        "k9s@latest",
-        "karabiner-elements@latest",
-        "kubectx@latest",
-        "neofetch@latest",
-        "neovim@latest",
-        "nodejs@latest",
-        "python3Full@latest",
-        "raycast@latest",
-        "ripgrep@latest",
-        "starship@latest",
-        "tldr@latest",
-        "tree-sitter@latest",
-        "vscode@latest",
-        "vscode-extensions.mkhl.direnv@latest",
-        "vscode-extensions.ms-kubernetes-tools.vscode-kubernetes-tools@latest",
-        "vscode-extensions.skellock.just",
-        "yq@latest",
-        "zellij@latest",
-        "zoxide@latest"
+  "packages": [
+    "atuin@latest",
+    "bash-preexec@latest",
+    "bat@latest",
+    "btop@latest",
+    "cheat@latest",
+    "chezmoi@latest",
+    "crossplane-cli@latest",
+    "delta@latest",
+    "direnv@latest",
+    "espanso@latest",
+    "eza@latest",
+    "fzf@latest",
+    "gh@latest",
+    "ghq@latest",
+    "git@latest",
+    "google-chrome@latest",
+    "htop@latest",
+    "jq@latest",
+    "k9s@latest",
+    "karabiner-elements@latest",
+    "kubectx@latest",
+    "neofetch@latest",
+    "neovim@latest",
+    "nodejs@latest",
+    "python3Full@latest",
+    "raycast@latest",
+    "ripgrep@latest",
+    "starship@latest",
+    "tldr@latest",
+    "tree-sitter@latest",
+    "vscode@latest",
+    "vscode-extensions.mkhl.direnv@latest",
+    "vscode-extensions.ms-kubernetes-tools.vscode-kubernetes-tools@latest",
+    "vscode-extensions.skellock.just",
+    "yq@latest",
+    "zellij@latest",
+    "zoxide@latest",
+    "rbw@latest",
+    "pinentry@latest",
+    "lazyssh@latest"
+  ],
+  "env": {
+    "DEVBOX_GLOBAL_PREFIX": "$HOME/.local/share/devbox/global/default/.devbox/nix/profile/default",
+    "DEVBOX_GLOBAL_ROOT":   "$HOME/.local/share/devbox/global/current"
+  },
+  "shell": {
+    "init_hook": [
+      ". ${DEVBOX_GLOBAL_ROOT}/init.sh"
     ],
-    "env": {
-        "DEVBOX_GLOBAL_PREFIX": "$HOME/.local/share/devbox/global/default/.devbox/nix/profile/default",
-        "DEVBOX_GLOBAL_ROOT": "$HOME/.local/share/devbox/global/current"
-    },
-    "shell": {
-        "init_hook": [
-            ". ${DEVBOX_GLOBAL_ROOT}/init.sh"
-        ],
-        "scripts": {
-            "1": [
-                "devbox run install-astro",
-                "devbox run install-hook-zsh",
-                "devbox run install-starship-prompt",
-                "devbox run setup-git",
-                "defaults write com.apple.dock persistent-apps -array"
-            ],
-            "install-astro": [
-                "echo cloning astronvim repo to ~/.config/nvim",
-                "git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim"
-            ],
-            "install-hook-bash": [
-                "echo adding 'devbox global shellenv' to ~/.bashrc",
-                "grep -qF 'devbox global shellenv' ~/.bashrc || echo 'eval \"$(devbox global shellenv --init-hook)\"' \u003e\u003e ~/.bashrc",
-                "tail -n 1 ~/.bashrc"
-            ],
-            "install-hook-zsh": [
-                "echo adding 'devbox global shellenv' to ~/.zshrc",
-                "grep -qF 'devbox global shellenv' ~/.zshrc || echo 'eval \"$(devbox global shellenv --init-hook)\"' \u003e\u003e ~/.zshrc",
-                "tail -n 1 ~/.zshrc"
-            ],
-            "install-starship-prompt": [
-                "if [ ! -f $HOME/.config/starship.toml ]",
-                "then",
-                "curl -fsSL https://devbox.getfleek.dev/config/starship/starship.toml \u003e $HOME/.config/starship.toml",
-                "fi"
-            ],
-            "latest-hash": [
-                "curl -fsSL https://nixos.org/channels/nixos-unstable/git-revision"
-            ],
-            "npm-global": [
-                "grep -qF '.npm-packages' ~/.npmrc || echo 'prefix=~/.npm-packages' \u003e\u003e ~/.npmrc",
-                "grep -qF '.npm-packages' ~/.zshrc || echo 'export PATH=$PATH:~/.npm-packages/bin' \u003e\u003e ~/.zshrc",
-                "grep -qF '.npm-packages' ~/.bashrc || echo 'export PATH=$PATH:~/.npm-packages/bin' \u003e\u003e ~/.bashrc",
-                "mkdir -p ~/.npm-packages"
-            ],
-            "setup-chezmoi": [
-                "chezmoi init --apply git@github.com:$GITHUB_USERNAME/$GITHUB_USERNAME.git"
-            ],
-            "setup-rbw": [
-                "rbw config set base_url https://passwords.being.haus",
-                "rbw config set email hi@niklasbeinghaus.com"
-            ],
-            "setup-git": [
-                "git config --global ghq.root $HOME/Projects",
-                "for gitconfig in $(git config --get-regexp includeif.gitdir | awk '{print $1}'); do",
-                "  dirname=${gitconfig%.path}",
-                "  git config --global --remove-section $dirname",
-                "done",
-                "sections=\"",
-                "  alias",
-                "  core",
-                "  credential.https://dev.azure.com",
-                "  credential",
-                "  delta",
-                "  difftool.difftastic",
-                "  diff",
-                "  http",
-                "  http.https://*.*.local",
-                "  include",
-                "  init",
-                "  interactive",
-                "  merge",
-                "\"",
-                "for section in $sections; do",
-                "  git config --global --get-regexp '^$section' > /dev/null 2>&1 \\",
-                "    && git config --global --remove-section $section",
-                "done",
-                "for gitconfig in $(find $(ghq root) -maxdepth 3 -name .gitconfig); do",
-                "  dirname=$(dirname $gitconfig)",
-                "  dirname=${dirname%/}/",
-                "  git config --global includeif.gitdir:${dirname}.path \"$gitconfig\"",
-                "done",
-                "git config --global alias.br branch",
-                "git config --global alias.ci commit",
-                "git config --global alias.co checkout",
-                "git config --global branch.autosetupmerge always",
-                "git config --global branch.autosetuprebase always",
-                "git config --global commit.verbose true",
-                "git config --global init.defaultBranch main",
-                "git config --global --bool http.'https://*.*.local'.sslverify false",
-                "git config --global core.pager 'less -RF'",
-                "git config --global pager.delta delta",
-                "git config --global alias.delta diff",
-                "git config --global interactive.diffFilter 'delta --color-only'",
-                "mkdir -p $HOME/.local/share/delta",
-                "curl -sLJ https://github.com/dandavison/delta/raw/main/themes.gitconfig \\",
-                "  -o $HOME/.local/share/delta/themes.gitconfig",
-                "git config --global include.path $HOME/.local/share/delta/themes.gitconfig",
-                "git config --global diff.colorMoved default",
-                "git config --global diff.guitool meld",
-                "git config --global diff.tool difftastic",
-                "git config --global difftool.difftastic.cmd 'difft \"$LOCAL\" \"$REMOTE\"'",
-                "git config --global delta.features calochortus-lyallii",
-                "git config --global delta.line-numbers-minus-style 'bold \"#b10036\"'",
-                "git config --global delta.line-numbers-plus-style 'bold \"#00b136\"'",
-                "git config --global delta.max-line-length 1024",
-                "git config --global delta.navigate true",
-                "git config --global delta.pager 'less -RF'",
-                "git config --global delta.side-by-side true",
-                "git config --global delta.tabs 2",
-                "git config --global delta.true-color always",
-                "git config --global merge.conflictstyle diff3",
-                "git config --global merge.guitool meld",
-                "git config --global merge.tool vimdiff",
-                "git config --global mergetool.vimdiff.cmd \"nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'\""
-            ]
-        }
-    },
-    "nixpkgs": {}
+    "scripts": {
+      "1": [
+        "devbox run install-astro",
+        "devbox run install-hook-zsh",
+        "devbox run install-starship-prompt",
+        "devbox run setup-git",
+        "touch $HOME/.hushlogin",
+        "defaults write com.apple.dock persistent-apps -array"
+      ],
+      "install-astro": [
+        "echo cloning astronvim repo to ~/.config/nvim",
+        "if [ ! -d $HOME/.config/nvim ]",
+        "then",
+        "git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim",
+        "fi"
+      ],
+      "install-hook-bash": [
+        "echo adding 'devbox global shellenv' to ~/.bashrc",
+        "grep -qF 'devbox global shellenv' ~/.bashrc || echo 'eval \"$(devbox global shellenv --init-hook)\"' >> ~/.bashrc",
+        "tail -n 1 ~/.bashrc"
+      ],
+      "install-hook-zsh": [
+        "echo adding 'devbox global shellenv' to ~/.zshrc",
+        "grep -qF 'devbox global shellenv' ~/.zshrc || echo 'eval \"$(devbox global shellenv --init-hook)\"' >> ~/.zshrc",
+        "tail -n 1 ~/.zshrc"
+      ],
+      "install-starship-prompt": [
+        "if [ ! -f $HOME/.config/starship.toml ]",
+        "then",
+        "curl -fsSL https://devbox.getfleek.dev/config/starship/starship.toml > $HOME/.config/starship.toml",
+        "fi"
+      ],
+      "latest-hash": [
+        "curl -fsSL https://nixos.org/channels/nixos-unstable/git-revision"
+      ],
+      "npm-global": [
+        "grep -qF '.npm-packages' ~/.npmrc || echo 'prefix=~/.npm-packages' >> ~/.npmrc",
+        "grep -qF '.npm-packages' ~/.zshrc || echo 'export PATH=$PATH:~/.npm-packages/bin' >> ~/.zshrc",
+        "grep -qF '.npm-packages' ~/.bashrc || echo 'export PATH=$PATH:~/.npm-packages/bin' >> ~/.bashrc",
+        "mkdir -p ~/.npm-packages"
+      ],
+      "setup-chezmoi": [
+        "chezmoi init --apply git@github.com:$GITHUB_USERNAME/$GITHUB_USERNAME.git"
+      ],
+      "setup-rbw": [
+        "rbw config set base_url https://passwords.being.haus",
+        "rbw config set email hi@niklasbeinghaus.com"
+      ],
+      "setup-git": [
+        "mkdir -p $HOME/Projects",
+        "git config --global ghq.root $HOME/Projects",
+        "for gitconfig in $(git config --get-regexp includeif.gitdir | awk '{print $1}'); do",
+        "  dirname=${gitconfig%.path}",
+        "  git config --global --remove-section $dirname",
+        "done",
+        "sections=\"",
+        "  alias",
+        "  core",
+        "  credential.https://dev.azure.com",
+        "  credential",
+        "  delta",
+        "  difftool.difftastic",
+        "  diff",
+        "  http",
+        "  http.https://*.*.local",
+        "  include",
+        "  init",
+        "  interactive",
+        "  merge",
+        "\"",
+        "for section in $sections; do",
+        "  git config --global --get-regexp '^$section' > /dev/null 2>&1 \\",
+        "    && git config --global --remove-section $section",
+        "done",
+        "for gitconfig in $(find $(ghq root) -maxdepth 3 -name .gitconfig); do",
+        "  dirname=$(dirname $gitconfig)",
+        "  dirname=${dirname%/}/",
+        "  git config --global includeif.gitdir:${dirname}.path \"$gitconfig\"",
+        "done",
+        "git config --global alias.br branch",
+        "git config --global alias.ci commit",
+        "git config --global alias.co checkout",
+        "git config --global branch.autosetupmerge always",
+        "git config --global branch.autosetuprebase always",
+        "git config --global commit.verbose true",
+        "git config --global init.defaultBranch main",
+        "git config --global --bool http.'https://*.*.local'.sslverify false",
+        "git config --global core.pager 'less -RF'",
+        "git config --global pager.delta delta",
+        "git config --global alias.delta diff",
+        "git config --global interactive.diffFilter 'delta --color-only'",
+        "mkdir -p $HOME/.local/share/delta",
+        "curl -sLJ https://github.com/dandavison/delta/raw/main/themes.gitconfig \\",
+        "  -o $HOME/.local/share/delta/themes.gitconfig",
+        "git config --global include.path $HOME/.local/share/delta/themes.gitconfig",
+        "git config --global diff.colorMoved default",
+        "git config --global diff.guitool meld",
+        "git config --global diff.tool difftastic",
+        "git config --global difftool.difftastic.cmd 'difft \"$LOCAL\" \"$REMOTE\"'",
+        "git config --global delta.features calochortus-lyallii",
+        "git config --global delta.line-numbers-minus-style 'bold \"#b10036\"'",
+        "git config --global delta.line-numbers-plus-style 'bold \"#00b136\"'",
+        "git config --global delta.max-line-length 1024",
+        "git config --global delta.navigate true",
+        "git config --global delta.pager 'less -RF'",
+        "git config --global delta.side-by-side true",
+        "git config --global delta.tabs 2",
+        "git config --global delta.true-color always",
+        "git config --global merge.conflictstyle diff3",
+        "git config --global merge.guitool meld",
+        "git config --global merge.tool vimdiff",
+        "git config --global mergetool.vimdiff.cmd \"nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'\""
+      ]
+    }
+  },
+  "nixpkgs": {}
 }
